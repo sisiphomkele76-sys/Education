@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Login - HIV Support System{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-xl border border-purple-100">
+  <div class="text-center mb-6">
+    <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-700 text-xl mx-auto mb-3">
+      <i class="fa-solid fa-right-to-bracket"></i>
+    </div>
+    <h2 class="text-2xl font-bold text-purple-950">Sign In</h2>
+    <p class="text-xs text-slate-500 mt-1">Access your confidential reminders and personal profile.</p>
+  </div>
+
+  <form method="POST" class="space-y-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="w-full bg-gradient-to-r from-purple-700 to-pink-600 text-white font-bold py-3 rounded-xl text-xs shadow-md hover:opacity-95 transition cursor-pointer">
+      Sign In Now
+    </button>
+  </form>
+</div>
+{% endblock %}

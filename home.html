@@ -1,0 +1,422 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - HIV Education & Support System{% endblock %}
+
+{% block content %}
+<!-- Hero Banner with Django Static Background -->
+<div class="hero-banner relative rounded-3xl overflow-hidden shadow-2xl mb-8 border border-purple-200/50 min-h-[320px] flex items-center bg-cover bg-center" style="background-image: url('{% static 'media/background.png.jpeg' %}');">
+  <!-- Dark Gradient Overlay for text readability -->
+  <div class="absolute inset-0 bg-gradient-to-r from-purple-950/90 via-purple-900/80 to-pink-900/65"></div>
+  
+  <div class="relative z-10 p-6 md:p-12 max-w-3xl text-white space-y-4">
+    <span class="bg-pink-600/80 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" id="hero-badge">Global Health & Support Platform</span>
+    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight" id="hero-title">Clear & Accessible HIV Information</h2>
+    <p class="text-sm md:text-base text-pink-100 opacity-95 leading-relaxed" id="hero-sub">
+      Learn about HIV prevention, testing, treatment, viral suppression, and medication schedules in your preferred global or local language.
+    </p>
+    
+    <!-- Medical Jargon vs Simple Language Toggle -->
+    <div class="pt-3 flex flex-wrap items-center gap-3">
+      <span class="text-xs font-semibold text-pink-200">Explanation Style:</span>
+      <div class="flex gap-1 bg-white/20 p-1 rounded-xl backdrop-blur-md border border-white/20">
+        <button id="mode-simple" onclick="setExplanationStyle('simple')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm">Simple Words</button>
+        <button id="mode-medical" onclick="setExplanationStyle('medical')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-pink-100 hover:text-white transition">Medical Terms</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DAILY HEALTH MOTIVATION BANNER -->
+<div class="bg-gradient-to-r from-pink-600 to-purple-800 text-white p-6 rounded-3xl shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between gap-4 border border-pink-400/30">
+  <div class="space-y-1 text-center md:text-left">
+    <span class="text-xs uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full font-bold">Daily Health Motivation</span>
+    <h3 id="motivationText" class="text-base md:text-lg font-extrabold text-pink-100 mt-2">
+      "Your health is your greatest wealth. Taking your medication on time every day is an act of self-love and resilience."
+    </h3>
+  </div>
+  <button onclick="rotateMotivation()" class="bg-white text-purple-950 font-bold px-4 py-2 rounded-xl text-xs hover:bg-pink-100 transition shadow-sm whitespace-nowrap">
+    <i class="fa-solid fa-rotate mr-1"></i> New Inspiration
+  </button>
+</div>
+
+<!-- Navigation Tabs -->
+<nav class="flex flex-wrap gap-2 mb-8 bg-white p-2 rounded-2xl shadow-sm border border-purple-100">
+  <button onclick="switchTab('learn')" id="tab-learn" class="nav-tab active px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2">
+    <i class="fa-solid fa-book-open text-pink-600"></i> <span id="nav-learn-txt">Learn HIV Info</span>
+  </button>
+  <button onclick="switchTab('reminders')" id="tab-reminders" class="nav-tab px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2">
+    <i class="fa-solid fa-clock text-purple-600"></i> <span id="nav-reminders-txt">Medication Reminders</span>
+  </button>
+  <button onclick="switchTab('cms')" id="tab-cms" class="nav-tab px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-2">
+    <i class="fa-solid fa-sliders text-pink-600"></i> <span>Educator CMS</span>
+  </button>
+</nav>
+
+<!-- SECTION 1: EXPANDED EDUCATIONAL MODULES -->
+<section id="section-learn" class="space-y-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Card 1: What is HIV & AIDS? -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 flex flex-col justify-between">
+      <div>
+        <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-700 text-xl font-bold mb-4">
+          <i class="fa-solid fa-circle-info"></i>
+        </div>
+        <h3 class="text-lg font-bold text-purple-950" id="c1-title">What is HIV & AIDS?</h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed" id="c1-desc">
+          HIV (Human Immunodeficiency Virus) attacks immune cells. Without treatment, it can progress to AIDS. Modern antiretroviral therapy stops this completely.
+        </p>
+      </div>
+      <div class="mt-6 pt-4 border-t border-purple-50 flex justify-between items-center">
+        <span class="text-xs text-purple-600 font-semibold" id="c1-tag">Comprehensive Basics</span>
+        <button onclick="openDetailModal('c1')" class="text-pink-600 hover:text-pink-700 text-xs font-bold flex items-center gap-1">Read More <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Card 2: Prevention (PrEP, PEP & Safer Sex) -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 flex flex-col justify-between">
+      <div>
+        <div class="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600 text-xl font-bold mb-4">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 class="text-lg font-bold text-purple-950" id="c2-title">Advanced Prevention</h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed" id="c2-desc">
+          Discover how condoms, PrEP (daily pill before exposure), and PEP (72-hour emergency meds) protect your health effectively.
+        </p>
+      </div>
+      <div class="mt-6 pt-4 border-t border-purple-50 flex justify-between items-center">
+        <span class="text-xs text-pink-600 font-semibold" id="c2-tag">Prevention Methods</span>
+        <button onclick="openDetailModal('c2')" class="text-pink-600 hover:text-pink-700 text-xs font-bold flex items-center gap-1">Read More <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Card 3: Testing & CD4 Counts -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 flex flex-col justify-between">
+      <div>
+        <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-700 text-xl font-bold mb-4">
+          <i class="fa-solid fa-vial"></i>
+        </div>
+        <h3 class="text-lg font-bold text-purple-950" id="c3-title">Testing & Immune Health</h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed" id="c3-desc">
+          Confidential finger-prick tests give results in 20 minutes. Learn about CD4 cell counts and viral load monitoring.
+        </p>
+      </div>
+      <div class="mt-6 pt-4 border-t border-purple-50 flex justify-between items-center">
+        <span class="text-xs text-purple-600 font-semibold" id="c3-tag">Testing Guidance</span>
+        <button onclick="openDetailModal('c3')" class="text-pink-600 hover:text-pink-700 text-xs font-bold flex items-center gap-1">Read More <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Card 4: Treatment & U=U (Undetectable = Untransmittable) -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 flex flex-col justify-between">
+      <div>
+        <div class="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600 text-xl font-bold mb-4">
+          <i class="fa-solid fa-pills"></i>
+        </div>
+        <h3 class="text-lg font-bold text-purple-950" id="c4-title">ARVs & U=U Science</h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed" id="c4-desc">
+          When ART lowers the virus to undetectable levels, it cannot be sexually transmitted. Live a long, healthy life.
+        </p>
+      </div>
+      <div class="mt-6 pt-4 border-t border-purple-50 flex justify-between items-center">
+        <span class="text-xs text-pink-600 font-semibold" id="c4-tag">Medication Guidance</span>
+        <button onclick="openDetailModal('c4')" class="text-pink-600 hover:text-pink-700 text-xs font-bold flex items-center gap-1">Read More <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Card 5: Nutrition, Wellness & Mental Health -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 flex flex-col justify-between">
+      <div>
+        <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-700 text-xl font-bold mb-4">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <h3 class="text-lg font-bold text-purple-950" id="c5-title">Nutrition & Mental Wellness</h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed" id="c5-desc">
+          Eating balanced meals, staying hydrated, managing stress, and building a strong support circle empower your immune system.
+        </p>
+      </div>
+      <div class="mt-6 pt-4 border-t border-purple-50 flex justify-between items-center">
+        <span class="text-xs text-purple-600 font-semibold" id="c5-tag">Holistic Wellness</span>
+        <button onclick="openDetailModal('c5')" class="text-pink-600 hover:text-pink-700 text-xs font-bold flex items-center gap-1">Read More <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Card 6: Overcoming Stigma & Support -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 flex flex-col justify-between">
+      <div>
+        <div class="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600 text-xl font-bold mb-4">
+          <i class="fa-solid fa-hands-holding-child"></i>
+        </div>
+        <h3 class="text-lg font-bold text-purple-950" id="c6-title">Breaking Stigma & Support</h3>
+        <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed" id="c6-desc">
+          Stigma creates barriers to care. Education, compassionate community care, and confidential support helplines heal society.
+        </p>
+      </div>
+      <div class="mt-6 pt-4 border-t border-purple-50 flex justify-between items-center">
+        <span class="text-xs text-pink-600 font-semibold" id="c6-tag">Community Care</span>
+        <button onclick="openDetailModal('c6')" class="text-pink-600 hover:text-pink-700 text-xs font-bold flex items-center gap-1">Read More <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 2: MEDICATION REMINDERS -->
+<section id="section-reminders" class="space-y-6 hidden">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 border-t-4 border-t-pink-500 space-y-4">
+      <h3 class="text-lg font-bold text-purple-950 flex items-center gap-2">
+        <i class="fa-solid fa-bell-plus text-pink-600"></i> Set Medication Reminder
+      </h3>
+      <form id="reminderForm" onsubmit="saveReminder(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-purple-900 mb-1">Medication Name</label>
+          <input type="text" id="medName" required placeholder="e.g. Daily ARV Pill" class="w-full border border-purple-200 rounded-xl px-4 py-2 text-sm bg-purple-50/50 focus:outline-none focus:border-purple-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-purple-900 mb-1">Scheduled Dose Time</label>
+          <input type="time" id="medTime" required class="w-full border border-purple-200 rounded-xl px-4 py-2 text-sm bg-purple-50/50 focus:outline-none focus:border-purple-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-purple-900 mb-1">Instructions / Notes</label>
+          <textarea id="medNotes" rows="2" placeholder="e.g. Take with water after breakfast" class="w-full border border-purple-200 rounded-xl px-4 py-2 text-sm bg-purple-50/50 focus:outline-none focus:border-purple-500"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-purple-700 to-pink-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-md hover:opacity-95 transition">
+          Save Reminder Schedule
+        </button>
+      </form>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 lg:col-span-2 space-y-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-lg font-bold text-purple-950">Your Active Reminders</h3>
+          <p class="text-xs text-slate-500">Stay consistent with your daily treatment schedule.</p>
+        </div>
+        <button onclick="triggerTestAlert()" class="bg-pink-100 text-pink-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-pink-200 transition">
+          Test Audio Alert
+        </button>
+      </div>
+      <div id="remindersList" class="space-y-3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: EDUCATOR CMS -->
+<section id="section-cms" class="space-y-6 hidden">
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 border-l-4 border-l-pink-600 space-y-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-lg font-bold text-purple-950">Healthcare Educator CMS</h3>
+        <p class="text-xs text-slate-500">Manage HIV educational materials and multilingual translations.</p>
+      </div>
+      <a href="{% url 'admin_cms' %}" class="bg-purple-700 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-purple-800 transition">
+        Open Admin CMS Panel →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Detail View Modal -->
+<div id="detailModal" class="fixed inset-0 bg-purple-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 space-y-4">
+    <div class="flex justify-between items-center border-b border-purple-50 pb-3">
+      <h3 id="modalTitle" class="text-lg font-bold text-purple-950">Topic Title</h3>
+      <button onclick="closeDetailModal()" class="text-slate-400 hover:text-purple-900 font-bold">✕</button>
+    </div>
+    <div id="modalBody" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></div>
+    <div class="pt-4 border-t border-purple-50 flex justify-end">
+      <button onclick="closeDetailModal()" class="bg-purple-700 text-white px-5 py-2 rounded-xl text-xs font-bold">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let reminders = [{ id: 1, name: "Daily ARV Treatment", time: "08:00 AM", notes: "Take with water after breakfast" }];
+
+  const motivations = [
+    "\"Your health is your greatest wealth. Taking your medication on time every day is an act of self-love and resilience.\"",
+    "\"Every day you take your treatment, you strengthen your body, protect your future, and inspire others.\"",
+    "\"You are greater than any diagnosis. With consistency and care, you live a vibrant, powerful life.\"",
+    "\"Small daily habits lead to extraordinary strength. Stay consistent, stay hopeful, stay unstoppable.\""
+  ];
+
+  function rotateMotivation() {
+    const randomIndex = Math.floor(Math.random() * motivations.length);
+    document.getElementById('motivationText').innerText = motivations[randomIndex];
+  }
+
+  const translations = {
+    en: {
+      heroTitle: "Clear & Accessible HIV Information",
+      heroSub: "Learn about HIV prevention, testing, treatment, viral suppression, and medication schedules in your preferred global or local language.",
+      c1Title: "What is HIV & AIDS?", c1Desc: "HIV (Human Immunodeficiency Virus) attacks immune cells. Without treatment, it can progress to AIDS. Modern antiretroviral therapy stops this completely.", c1Tag: "Comprehensive Basics",
+      c2Title: "Advanced Prevention", c2Desc: "Discover how condoms, PrEP (daily pill before exposure), and PEP (72-hour emergency meds) protect your health effectively.", c2Tag: "Prevention Methods",
+      c3Title: "Testing & Immune Health", c3Desc: "Confidential finger-prick tests give results in 20 minutes. Learn about CD4 cell counts and viral load monitoring.", c3Tag: "Testing Guidance",
+      c4Title: "ARVs & U=U Science", c4Desc: "When ART lowers the virus to undetectable levels, it cannot be sexually transmitted. Live a long, healthy life.", c4Tag: "Medication Guidance",
+      c5Title: "Nutrition & Mental Wellness", c5Desc: "Eating balanced meals, staying hydrated, managing stress, and building a strong support circle empower your immune system.", c5Tag: "Holistic Wellness",
+      c6Title: "Breaking Stigma & Support", c6Desc: "Stigma creates barriers to care. Education, compassionate community care, and confidential support helplines heal society.", c6Tag: "Community Care",
+      navLearn: "Learn HIV Info", navReminders: "Medication Reminders"
+    },
+    es: {
+      heroTitle: "Información Clara y Accesible sobre el VIH",
+      heroSub: "Aprenda sobre prevención, pruebas, tratamiento y horarios de medicación en su idioma preferido.",
+      c1Title: "¿Qué es el VIH y el SIDA?", c1Desc: "El VIH ataca las células inmunitarias. Con tratamiento antirretroviral moderno, se mantiene una salud excelente.", c1Tag: "Conceptos Básicos",
+      c2Title: "Prevención Avanzada", c2Desc: "Descubra cómo el PrEP, la PEP y los métodos de barrera protegen su salud eficazmente.", c2Tag: "Métodos de Prevención",
+      c3Title: "Pruebas y Salud Inmunológica", c3Desc: "Las pruebas rápidas dan resultados en 20 minutos con total confidencialidad.", c3Tag: "Guía de Pruebas",
+      c4Title: "ARVs y Ciencia U=U", c4Desc: "Indetectable es intransmisible (U=U). Viva una vida plena y saludable.", c4Tag: "Guía de Medicamentos",
+      c5Title: "Nutrición y Bienestar Mental", c5Desc: "Una buena nutrición y el bienestar emocional fortalecen sus defensas naturales.", c5Tag: "Bienestar Integral",
+      c6Title: "Superando el Estigma", c6Desc: "La educación compasiva y el apoyo comunitario rompen las barreras del estigma.", c6Tag: "Apoyo Comunitario",
+      navLearn: "Aprender sobre VIH", navReminders: "Recordatorios"
+    },
+    fr: {
+      heroTitle: "Information Claire et Accessible sur le VIH",
+      heroSub: "Découvrez la prévention, les tests, les traitements et l'observance dans votre langue.",
+      c1Title: "Qu'est-ce que le VIH ?", c1Desc: "Le VIH attaque le système immunitaire. Les traitements modernes garantissent une vie longue et saine.", c1Tag: "Bases Essentielles",
+      c2Title: "Prévention Avancée", c2Desc: "Comprenez l'efficacité de la PrEP, de la PEP et des préservatifs.", c2Tag: "Méthodes de Prévention",
+      c3Title: "Dépistage et Santé", c3Desc: "Les tests rapides offrent des résultats en 20 minutes en toute confidentialité.", c3Tag: "Guide de Dépistage",
+      c4Title: "ARV et Science I=I", c4Desc: "Indétectable = Non transmissible. Prenez vos médicaments chaque jour.", c4Tag: "Guide des Médicaments",
+      c5Title: "Nutrition et Bien-être", c5Desc: "Une alimentation équilibrée et la paix d'esprit soutiennent votre immunité.", c5Tag: "Bien-être Global",
+      c6Title: "Vaincre la Stigmatisation", c6Desc: "L'éducation et la solidarité communautaire transforment les vies.", c6Tag: "Soutien Communautaire",
+      navLearn: "Apprendre sur le VIH", navReminders: "Rappels de Médicaments"
+    },
+    xh: {
+      heroTitle: "Inkcazelo ye-HIV eCacileyo nEnokuqondeka",
+      heroSub: "Funda ngothintelo lwe-HIV, uvavanyo, unyango, kunye neshedyuli yamayeza ngolwimi lwakho oluthandayo.",
+      c1Title: "Yintoni i-HIV ne-AIDS?", c1Desc: "I-HIV yintsholongwane ebuthathaka umzimba. Ngamayeza alula, abantu abaphila ne-HIV hlala sempilweni kwaye baphila ixesha elide.", c1Tag: "Ulwazi Olusisiseko",
+      c2Title: "Uthintelo Oluphezulu", c2Desc: "Funda ngokhuseleko, i-PrEP, kunye ne-PEP ukuzikhusela kuhlaselo lentsholongwane.", c2Tag: "Iindlela zoThintelo",
+      c3Title: "Uvavanyo Lwegazi", c3Desc: "Uvavanyo lulula kwaye luyimfihlo. Fumana iziphumo kwimizuzu engama-20.", c3Tag: "Isikhokelo soVavanyo",
+      c4Title: "Unyango kunye ne-U=U", c4Desc: "Xa intsholongwane ingabonakali emzimbeni (Undetectable), ayasuleli. Hlala useza amayeza akho.", c4Tag: "Isikhokelo samaYeza",
+      c5Title: "Ukutya Okusempilweni", c5Desc: "Ukutya kakuhle nokuphila kakuhle kuyakunceda uqine emzimbeni.", c5Tag: "Impilo Entle",
+      c6Title: "Ukuphelisa Ucalucalulo", c6Desc: "Intsebenziswano nokufundisana kuyasikhusela sonke.", c6Tag: "Inkxaso Yoluntu",
+      navLearn: "Funda nge-HIV", navReminders: "Izikhumbuzo zamaYeza"
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const langSelect = document.getElementById("languageSelect") || (window.parent && window.parent.document.getElementById("languageSelect"));
+    if (langSelect) {
+      langSelect.addEventListener("change", (e) => applyTranslations(e.target.value));
+    }
+  });
+
+  function applyTranslations(lang) {
+    const t = translations[lang];
+    if (!t) return;
+    if (document.getElementById('hero-title')) document.getElementById('hero-title').innerText = t.heroTitle;
+    if (document.getElementById('hero-sub')) document.getElementById('hero-sub').innerText = t.heroSub;
+    if (document.getElementById('c1-title')) document.getElementById('c1-title').innerText = t.c1Title;
+    if (document.getElementById('c1-desc')) document.getElementById('c1-desc').innerText = t.c1Desc;
+    if (document.getElementById('c1-tag')) document.getElementById('c1-tag').innerText = t.c1Tag;
+    if (document.getElementById('c2-title')) document.getElementById('c2-title').innerText = t.c2Title;
+    if (document.getElementById('c2-desc')) document.getElementById('c2-desc').innerText = t.c2Desc;
+    if (document.getElementById('c2-tag')) document.getElementById('c2-tag').innerText = t.c2Tag;
+    if (document.getElementById('c3-title')) document.getElementById('c3-title').innerText = t.c3Title;
+    if (document.getElementById('c3-desc')) document.getElementById('c3-desc').innerText = t.c3Desc;
+    if (document.getElementById('c3-tag')) document.getElementById('c3-tag').innerText = t.c3Tag;
+    if (document.getElementById('c4-title')) document.getElementById('c4-title').innerText = t.c4Title;
+    if (document.getElementById('c4-desc')) document.getElementById('c4-desc').innerText = t.c4Desc;
+    if (document.getElementById('c4-tag')) document.getElementById('c4-tag').innerText = t.c4Tag;
+    if (document.getElementById('c5-title')) document.getElementById('c5-title').innerText = t.c5Title;
+    if (document.getElementById('c5-desc')) document.getElementById('c5-desc').innerText = t.c5Desc;
+    if (document.getElementById('c5-tag')) document.getElementById('c5-tag').innerText = t.c5Tag;
+    if (document.getElementById('c6-title')) document.getElementById('c6-title').innerText = t.c6Title;
+    if (document.getElementById('c6-desc')) document.getElementById('c6-desc').innerText = t.c6Desc;
+    if (document.getElementById('c6-tag')) document.getElementById('c6-tag').innerText = t.c6Tag;
+    if (document.getElementById('nav-learn-txt')) document.getElementById('nav-learn-txt').innerText = t.navLearn;
+    if (document.getElementById('nav-reminders-txt')) document.getElementById('nav-reminders-txt').innerText = t.navReminders;
+  }
+
+  function switchTab(tabId) {
+    document.getElementById('section-learn').classList.add('hidden');
+    document.getElementById('section-reminders').classList.add('hidden');
+    document.getElementById('section-cms').classList.add('hidden');
+
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    document.getElementById('section-' + tabId).classList.remove('hidden');
+
+    if (tabId === 'reminders') renderReminders();
+  }
+
+  function setExplanationStyle(style) {
+    if (style === 'simple') {
+      document.getElementById('mode-simple').className = "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm";
+      document.getElementById('mode-medical').className = "px-3.5 py-1.5 rounded-lg text-xs font-medium text-pink-100 hover:text-white transition";
+      document.getElementById('c1-desc').innerText = "HIV is a virus that affects the immune system (the body's natural defense against illness). With treatment, people living with HIV stay healthy.";
+    } else {
+      document.getElementById('mode-medical').className = "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm";
+      document.getElementById('mode-simple').className = "px-3.5 py-1.5 rounded-lg text-xs font-medium text-pink-100 hover:text-white transition";
+      document.getElementById('c1-desc').innerText = "HIV (Human Immunodeficiency Virus) targets CD4 T-lymphocytes, compromising cell-mediated immunity without antiretroviral therapy (ART).";
+    }
+  }
+
+  function saveReminder(e) {
+    e.preventDefault();
+    const name = document.getElementById('medName').value;
+    const time = document.getElementById('medTime').value;
+    const notes = document.getElementById('medNotes').value;
+    reminders.push({ id: Date.now(), name, time, notes });
+    document.getElementById('reminderForm').reset();
+    renderReminders();
+  }
+
+  function renderReminders() {
+    const list = document.getElementById('remindersList');
+    if (reminders.length === 0) {
+      list.innerHTML = `<p class="text-xs text-slate-400">No active medication reminders saved yet.</p>`;
+      return;
+    }
+    list.innerHTML = reminders.map(r => `
+      <div class="p-4 bg-purple-50/60 border border-purple-100 rounded-xl flex items-center justify-between">
+        <div>
+          <h4 class="font-bold text-xs text-purple-950">${r.name}</h4>
+          <p class="text-xs text-slate-500"><i class="fa-regular fa-clock text-pink-600"></i> ${r.time} — ${r.notes || 'No extra notes'}</p>
+        </div>
+        <button onclick="deleteReminder(${r.id})" class="text-rose-600 text-xs font-bold hover:underline">Remove</button>
+      </div>
+    `).join('');
+  }
+
+  function deleteReminder(id) {
+    reminders = reminders.filter(r => r.id !== id);
+    renderReminders();
+  }
+
+  function triggerTestAlert() {
+    alert("🔔 MEDICATION ALERT: Time to take your scheduled HIV medication!");
+  }
+
+  function openDetailModal(cardId) {
+    const modal = document.getElementById('detailModal');
+    const title = document.getElementById('modalTitle');
+    const body = document.getElementById('modalBody');
+
+    if (cardId === 'c1') {
+      title.innerText = "What is HIV & AIDS?";
+      body.innerText = "HIV (Human Immunodeficiency Virus) is a virus that targets the immune system, specifically CD4 cells. If left untreated, it weakens the body's ability to fight infections, leading to AIDS (Acquired Immunodeficiency Syndrome). Today, modern Antiretroviral Therapy (ART) stops the virus from replicating, allowing individuals to live long, healthy, and fulfilling lives.";
+    } else if (cardId === 'c2') {
+      title.innerText = "Advanced Prevention Methods";
+      body.innerText = "HIV prevention includes barrier methods (condoms), PrEP (Pre-Exposure Prophylaxis—a daily pill taken by HIV-negative individuals to prevent infection), and PEP (Post-Exposure Prophylaxis—emergency medication taken within 72 hours of potential exposure). Combined, these strategies offer powerful protection.";
+    } else if (cardId === 'c3') {
+      title.innerText = "Testing & Immune Health Monitoring";
+      body.innerText = "Regular testing is essential. Rapid finger-prick tests provide confidential results in under 20 minutes. For individuals on treatment, monitoring CD4 cell counts and viral load ensures that the immune system remains strong and the treatment is working effectively.";
+    } else if (cardId === 'c4') {
+      title.innerText = "ARVs & U=U (Undetectable = Untransmittable)";
+      body.innerText = "Antiretroviral Therapy (ART) suppresses the virus in the blood to undetectable levels. Scientific consensus proves that U=U (Undetectable = Untransmittable): people living with HIV who maintain an undetectable viral load cannot sexually transmit the virus to partners.";
+    } else if (cardId === 'c5') {
+      title.innerText = "Nutrition & Mental Wellness";
+      body.innerText = "Holistic health goes hand-in-hand with medication. Eating nutrient-rich meals, drinking clean water, engaging in moderate exercise, and prioritizing mental health through counseling and community support build profound inner resilience.";
+    } else if (cardId === 'c6') {
+      title.innerText = "Breaking Stigma & Community Support";
+      body.innerText = "Stigma and discrimination are major obstacles to healthcare access. By promoting compassionate education, open dialogue, and confidential support helplines, we build an inclusive society where everyone feels safe, respected, and cared for.";
+    }
+    modal.classList.remove('hidden');
+  }
+
+  function closeDetailModal() {
+    document.getElementById('detailModal').classList.add('hidden');
+  }
+</script>
+{% endblock %}

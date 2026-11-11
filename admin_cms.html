@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Educator CMS - HIV Support System{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-purple-100 space-y-6">
+  <div class="flex justify-between items-center border-b border-purple-50 pb-4">
+    <div>
+      <h2 class="text-2xl font-bold text-purple-950">Healthcare Educator CMS Panel</h2>
+      <p class="text-xs text-slate-500">Manage treatment resources and remove outdated medical information securely.</p>
+    </div>
+    <a href="{% url 'home' %}" class="bg-purple-100 text-purple-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-purple-200 transition">← Back to Home</a>
+  </div>
+
+  <div class="space-y-4">
+    <h3 class="text-lg font-bold text-purple-950">Published Treatment Resources</h3>
+    <div class="space-y-3">
+      {% for res in resources %}
+        <div class="p-4 bg-purple-50/60 border border-purple-100 rounded-2xl flex justify-between items-center text-xs">
+          <div>
+            <h4 class="font-bold text-sm text-purple-950">{{ res.title }}</h4>
+            <p class="text-slate-600 mt-1">{{ res.content|truncatechars:120 }}</p>
+            <span class="text-[10px] text-pink-600 font-semibold mt-2 inline-block">Category: {{ res.category }}</span>
+          </div>
+          <form method="POST" onsubmit="return confirm('Are you sure you want to remove this outdated resource?');">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="delete_resource">
+            <input type="hidden" name="id" value="{{ res.id }}">
+            <button type="submit" class="bg-rose-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-rose-700 transition">Remove Outdated Info</button>
+          </form>
+        </div>
+      {% empty %}
+        <p class="text-xs text-slate-400">No treatment resources found in the CMS.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

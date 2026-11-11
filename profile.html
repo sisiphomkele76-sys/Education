@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}User Profile - HIV Support System{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+    <h2 class="text-xl font-bold text-purple-950">Personal Information</h2>
+    <p class="text-xs text-slate-500 mb-4">Your personal health data is kept strictly confidential and secure.</p>
+    <div class="grid grid-cols-2 gap-4 text-sm bg-purple-50 p-4 rounded-xl">
+      <div><strong>Name:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</div>
+      <div><strong>Username / ID:</strong> {{ request.user.username }}</div>
+      <div><strong>Preferred Language:</strong> {{ profile.preferred_language|upper }}</div>
+      <div><strong>Account Created:</strong> {{ profile.date_registered|date:"Y-m-d" }}</div>
+    </div>
+  </div>
+
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+    <h3 class="text-lg font-bold text-purple-950 mb-3">Prescribed Medication Guidance</h3>
+    <div class="space-y-3">
+      {% for med in prescribed_meds %}
+        <div class="p-4 border border-purple-100 rounded-xl bg-purple-50/50">
+          <h4 class="font-bold text-purple-900">{{ med.title }} <span class="text-xs font-normal text-slate-500">({{ med.medical_term }})</span></h4>
+          <p class="text-xs text-slate-700 mt-1"><strong>Simple explanation:</strong> {{ med.simple_explanation }}</p>
+          <p class="text-xs text-pink-700 mt-1"><strong>Dosage instructions:</strong> {{ med.dosage_instructions }}</p>
+        </div>
+      {% empty %}
+        <p class="text-xs text-slate-400">No prescribed medication guides available yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <h3 class="text-lg font-bold text-purple-950 mb-3">Set Time Reminder</h3>
+      <form method="POST" class="space-y-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="w-full bg-purple-700 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-purple-800 transition">Save Reminder Schedule</button>
+      </form>
+    </div>
+    <div>
+      <h3 class="text-lg font-bold text-purple-950 mb-3">Your Active Reminders</h3>
+      <div class="space-y-2">
+        {% for rem in reminders %}
+          <div class="p-3 bg-pink-50 border border-pink-100 rounded-xl flex justify-between items-center text-xs">
+            <div>
+              <strong>{{ rem.medication_name }}</strong> at {{ rem.scheduled_time|time:"H:i" }}
+              <div class="text-slate-500">{{ rem.instructions }}</div>
+            </div>
+            <a href="{% url 'delete_reminder' rem.id %}" class="text-rose-600 font-bold hover:underline">Remove</a>
+          </div>
+        {% empty %}
+          <p class="text-xs text-slate-400">No active reminders saved.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+/* Responsive Styles & Theme Overrides */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hero Banner Background Styling */
+/*.hero-banner {
+  background-image: url('../media/background.png');
+  background-size: cover;
+  background-position: center;
+}
+*/
+
+.nav-tab.active {
+  background-color: #7e22ce;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(126, 34, 206, 0.25);
+}
+
+.nav-tab.active i {
+  color: #ffffff !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3e8ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c026d3;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9333ea;
+}
+
+/* Hero Banner Background Styling */
+.hero-banner {
+  background-image: url('../media/background.png.jpg');
+  background-size: cover;
+  background-position: center;
+}

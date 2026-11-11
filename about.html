@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}About - HIV Education & Support System{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-purple-100 space-y-6">
+  <h2 class="text-2xl font-bold text-purple-950">About the Project</h2>
+  <p class="text-sm text-slate-600 leading-relaxed">
+    The <strong>HIV Education & Medication Support System</strong> was developed by <strong>Sisipho Mkele</strong> and facilitated by <strong>Nyakama Mahle</strong> under the Make Me A Coder programme.
+  </p>
+  <p class="text-sm text-slate-600 leading-relaxed">
+    Our mission is to break language and medical terminology barriers across the globe, providing accessible, confidential HIV education, testing resources, prescribed medication guides, and time reminders.
+  </p>
+  <div class="pt-4 border-t border-purple-50">
+    <a href="{% url 'home' %}" class="bg-purple-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold inline-block hover:bg-purple-800 transition">← Back to Home</a>
+  </div>
+</div>
+{% endblock %}
